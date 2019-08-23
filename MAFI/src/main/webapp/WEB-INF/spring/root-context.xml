@@ -15,8 +15,20 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 쿼리출력 -->
+	<bean id="dataSource"
+		class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL : " />
+			</bean>
+		</property>
+	</bean>
+
 		 <!-- 오라클 접속 -->
-    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSourceSpied">
         <property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName"/>
         <property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/ORCL" name="url"/>
         <property value="MAFI" name="username"/>
@@ -32,7 +44,7 @@
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
-    
+
     <context:component-scan base-package="com.MAFI.domain"/>
     <context:component-scan base-package="com.MAFI.persistence"/>
     <context:component-scan base-package="com.MAFI.service"/>
