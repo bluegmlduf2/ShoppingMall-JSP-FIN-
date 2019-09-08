@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MAFI.mappers.adminMapper">
+
+	<!--카테고리호출 -->
+	<select id="category" resultType="com.MAFI.domain.CategoryVO">
+		SELECT
+		    LEVEL,
+		    CATENAME,
+		    CATECODE,
+		    CATECODEREF
+		FROM
+		    GOODS_CATEGORY
+		START WITH
+		    CATECODEREF IS NULL
+		CONNECT BY
+		    PRIOR CATECODE = CATECODEREF
+	</select>
+
+	<!-- 상품 등록 -->
+	<insert id="register">
+	 insert into tbl_goods (gdsNum, gdsName, cateCode, gdsPrice, gdsStock, gdsDes,gdsImg,gdsThumbImg)
+	     values (tbl_goods_seq.nextval, #{gdsName}, #{cateCode}, #{gdsPrice}, #{gdsStock}, #{gdsDes},#{gdsImg},#{gdsThumbImg})
+	</insert>
+	
+	<!-- 상품 목록 --> 
+	<select id="goodslist" resultType="com.MAFI.domain.GoodsVO">
+			 SELECT
+		    GDSNUM,
+		    GDSNAME,
+		    CATECODE,
+		    GDSPRICE,
+		    GDSSTOCK,
+		    GDSDES,
+		    GDSIMG,
+		    GDSDATE
+		FROM
+		    TBL_GOODS
+		ORDER BY
+		    GDSNUM DESC
+	 </select>
+	 
+	 <!-- 상품 조회 + 카테고리 조인-->
+	<select id="goodsView" resultType="com.MAFI.domain.GoodsViewVO">
+		SELECT
+		    G.GDSNUM,
+		    G.GDSNAME,
+		    G.CATECODE,
+		    C.CATECODEREF,
+		    C.CATENAME,
+		    GDSPRICE,
+		    GDSSTOCK,
+		    GDSDES,
+		    GDSIMG,
+		    GDSDATE,
+		    G.GDSIMG,
+		    G.GDSTHUMBIMG
+		FROM
+		    TBL_GOODS        G
+		    INNER JOIN GOODS_CATEGORY   C ON G.CATECODE = C.CATECODE
+		WHERE G.GDSNUM=#{GDSNUM}
+	</select>
+
+	<!-- 상품 수정 -->
+	<update id="goodsModify">
+	 UPDATE TBL_GOODS
+	     SET
+	         GDSNAME = #{gdsName},
+	         CATECODE = #{cateCode},
+	         GDSPRICE = #{gdsPrice},
+	         GDSSTOCK = #{gdsStock},
+	         GDSDES = #{gdsDes}
+	     WHERE GDSNUM = ${gdsNum}
+	</update>
+	
+	<!-- 상품 삭제 -->
+	<delete id="goodDelete">
+	DELETE TBL_GOODS
+	WHERE GDSNUM=#{gdsNum}
+	</delete>
+</mapper>
