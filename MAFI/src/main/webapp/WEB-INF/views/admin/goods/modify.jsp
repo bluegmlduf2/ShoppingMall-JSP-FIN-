@@ -11,11 +11,24 @@
 <link rel="stylesheet"
 	href="/resources/bootstrap/bootstrap-theme.min.css">
 <script src="/resources/bootstrap/bootstrap.min.js"></script>
+<script src="/resources/ckeditor/ckeditor.js"></script>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <!--스타일css  -->
 <%@ include file="../include/style.jsp"%>
 </head>
+<script>
+var regExp = /[^0-9]/gi;//정규표현식 숫자만가능
+
+	$("#gdsPrice").keyup(function(){ numCheck($(this)); });
+	$("#gdsStock").keyup(function(){ numCheck($(this)); });
+	
+	function numCheck(selector) {//selector는 gdsPrice,gdsStock등의 선택자
+		alert("3333");
+		var tempVal = selector.val();
+		 selector.val(tempVal.replace(regExp, ""));
+	}
+</script>
 <body>
 	<div id="root">
 		<header id="header">
@@ -36,7 +49,7 @@
 			</aside>
 			<div id="container_box">
 				<h2>商品登録</h2>
-				<form role="form" method="post" autocomplete="off">
+				<form role="form" method="post" autocomplete="off" enctype="multipart/form-data">
 					<input type="hidden" name="gdsNum" value="${goods.gdsNum}"/>
 					
 					<div class="inputArea"> 
@@ -64,11 +77,58 @@
 					 <input type="text" id="gdsStock" name="gdsStock" value="${goods.gdsStock}"/>
 					</div>
 					
+					<script>
+					//정규식을 이용해서 숫자빼고 입력못하게 막는다
+					var regExp =/[^0-9]/gi;
+					
+					$("input[name=gdsPrice]").keyup(function(){ numCheck($(this)); });
+					$("#gdsStock").keyup(function(){ numCheck($(this)); });
+					
+					function numCheck(selector) {
+					 var tempVal = selector.val();
+					 selector.val(tempVal.replace(regExp, ""));
+					}
+					</script>
+					
 					<div class="inputArea">
 					 <label for="gdsDes">詳細情報</label>
 					 <textarea rows="5" cols="50" id="gdsDes" name="gdsDes" >${goods.gdsDes}</textarea>
+						<script>
+						 var ckeditor_config = {
+						   resize_enaleb : false,
+						   enterMode : CKEDITOR.ENTER_BR,
+						   shiftEnterMode : CKEDITOR.ENTER_P,
+						   filebrowserUploadUrl : "/admin/goods/ckUpload"
+						 };
+						 
+						 CKEDITOR.replace("gdsDes", ckeditor_config);
+						</script>
+					
+					</div>
+	
+					<div class="inputArea">
+					<label for="gdsImg">イメージ</label>
+					<input type="file" id="gdsImg" name="file" />
+					
+					<div class="select_img_m">
+					 <img src="${goods.gdsImg}" />
+					 <input type="hidden" name="gdsImg" value="${goods.gdsImg}" />
+					 <input type="hidden" name="gdsThumbImg" value="${goods.gdsThumbImg}" /> 
 					</div>
 					
+					<script>
+						 $("#gdsImg").change(function(){
+						  if(this.files && this.files[0]) {
+						   var reader = new FileReader;
+						   reader.onload = function(data) {
+						    $(".select_img_m img").attr("src", data.target.result).width(500);        
+						   }
+						   reader.readAsDataURL(this.files[0]);
+						  }
+						 });
+					</script>
+
+					</div>
 					<div class="inputArea">
 					 <button type="submit" id="update_Btn" class="btn btn-primary">修正完了</button>
 					 <button type="button" id="back_Btn" class="btn btn-primary">戻る</button>

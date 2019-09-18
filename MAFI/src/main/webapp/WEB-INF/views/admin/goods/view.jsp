@@ -15,6 +15,9 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <!--스타일css  -->
+<style>
+.gdsDes img { max-width:600px; height:auto; }
+</style>
 <%@ include file="../include/style.jsp"%>
 </head>
 <body>
@@ -65,7 +68,7 @@
 					
 					<div class="inputArea">
 					 <label for="gdsDes">詳細情報</label>
-					 <span>${goods.gdsDes}</span>
+					 <div class="gdsDes">${goods.gdsDes}</div>
 					</div>
 					
 					<div class="inputArea">

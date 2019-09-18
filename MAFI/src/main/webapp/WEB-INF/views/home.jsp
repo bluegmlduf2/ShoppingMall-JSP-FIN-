@@ -6,7 +6,7 @@
 <title>MAFI Admin</title>
 <!--제이쿼리  -->
 <!-- 부트스트랩 이전에 제이쿼리를 넣어줘야합니다. 부트스트랩은 제이쿼리 기반으로 작동되기 때문입니다. -->
-<script src="/resources/jquery/jquery-3.3.1.min.js"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <!--부트스트랩  -->
 <link rel="stylesheet" href="/resources/bootstrap/bootstrap.min.css">
 <link rel="stylesheet"

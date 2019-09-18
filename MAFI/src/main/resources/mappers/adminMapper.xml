@@ -26,18 +26,23 @@
 	</insert>
 	
 	<!-- 상품 목록 --> 
-	<select id="goodslist" resultType="com.MAFI.domain.GoodsVO">
-			 SELECT
-		    GDSNUM,
-		    GDSNAME,
-		    CATECODE,
+	<select id="goodslist" resultType="com.MAFI.domain.GoodsViewVO">
+		SELECT
+		    G.GDSNUM,
+		    G.GDSNAME,
+		    G.CATECODE,
+		    C.CATECODEREF,
+		    C.CATENAME,
 		    GDSPRICE,
 		    GDSSTOCK,
 		    GDSDES,
 		    GDSIMG,
-		    GDSDATE
+		    GDSDATE,
+		    G.GDSIMG,
+		    G.GDSTHUMBIMG
 		FROM
-		    TBL_GOODS
+		    TBL_GOODS        G
+		    INNER JOIN GOODS_CATEGORY   C ON G.CATECODE = C.CATECODE
 		ORDER BY
 		    GDSNUM DESC
 	 </select>
@@ -71,7 +76,10 @@
 	         CATECODE = #{cateCode},
 	         GDSPRICE = #{gdsPrice},
 	         GDSSTOCK = #{gdsStock},
-	         GDSDES = #{gdsDes}
+	         GDSDES = #{gdsDes},
+	        <!--2018908 20:43 추가 --> 
+             gdsImg = #{gdsImg},
+         	 gdsThumbImg = #{gdsThumbImg}
 	     WHERE GDSNUM = ${gdsNum}
 	</update>
 	

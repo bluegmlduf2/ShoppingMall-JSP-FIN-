@@ -11,6 +11,7 @@
 <link rel="stylesheet"
 	href="/resources/bootstrap/bootstrap-theme.min.css">
 <script src="/resources/bootstrap/bootstrap.min.js"></script>
+<script src="/resources/ckeditor/ckeditor.js"></script>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <!--스타일css  -->
@@ -57,20 +58,43 @@
 					 <label for="gdsPrice">金額</label>
 					 <input type="text" id="gdsPrice" name="gdsPrice" />
 					</div>
-					
+										
 					<div class="inputArea">
 					 <label for="gdsStock">数量</label>
 					 <input type="text" id="gdsStock" name="gdsStock" />
 					</div>
+
+					<script>
+					//정규식을 이용해서 숫자빼고 입력못하게 막는다
+					var regExp =/[^0-9]/gi;
+					
+					$("input[name=gdsPrice]").keyup(function(){ numCheck($(this)); });
+					$("#gdsStock").keyup(function(){ numCheck($(this)); });
+					
+					function numCheck(selector) {
+					 var tempVal = selector.val();
+					 selector.val(tempVal.replace(regExp, ""));
+					}
+					</script>
 					
 					<div class="inputArea">
 					 <label for="gdsDes">詳細情報</label>
 					 <textarea rows="5" cols="50" id="gdsDes" name="gdsDes"></textarea>
+						 <script>
+						 var ckeditor_config = {
+						   resize_enaleb : false,
+						   enterMode : CKEDITOR.ENTER_BR,
+						   shiftEnterMode : CKEDITOR.ENTER_P,
+						   filebrowserUploadUrl : "/admin/goods/ckUpload"
+						 };
+						 
+						 CKEDITOR.replace("gdsDes", ckeditor_config);
+						</script>
 					</div>
 					
 					<div class="inputArea">
 					 <label for="gdsImg">イメージ</label>
-					 <input type="file" id="gdsImg" name="file" />
+					 <input type="file" id="gdsImg" name="file" />					 
 					 <div class="select_img"><img src="" /></div>
 					 
 						 <script>

@@ -16,6 +16,10 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <!--스타일css  -->
 <%@ include file="../include/style.jsp"%>
+<style>
+/*섬네일 크기수정  */
+#container_box table img { width:150px; height:auto;}
+</style>
 </head>
 <body>
 	<div id="root">
@@ -40,6 +44,7 @@
 					<table>
 						 <thead>
 						  <tr>
+						   <th>サムネイル</th>
 						   <th>番号</th>
 						   <th>商品名</th>
 						   <th>カテゴリー</th>
@@ -51,9 +56,10 @@
 						 <tbody>
 						  <c:forEach items="${list}" var="list">
 						  <tr>
+						   <td><img src="${list.gdsThumbImg}" /></td>
 						   <td>${list.gdsNum}</td>
 						   <td><a href="/admin/goods/view?n=${list.gdsNum}">${list.gdsName}</a></td>
-						   <td>${list.cateCode}</td>
+						   <td>${list.cateName}</td>
 						   <td>
 						   	<fmt:formatNumber value="${list.gdsPrice}" pattern="###,###,###"/>
 						   </td>

@@ -38,7 +38,10 @@ textarea#gdsDes { width:400px; height:180px; }
 .select_img img {width:400px; height:180px;}
 
 .oriImg {width:500px; height:auto;}
+
 .thumbImg {}
+
+.select_img_m img {width:500px; height:auto;}
 </style>
 </body>
 </html>

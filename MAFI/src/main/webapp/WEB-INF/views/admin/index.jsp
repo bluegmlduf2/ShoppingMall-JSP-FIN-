@@ -5,7 +5,7 @@
 <head>
 <title>MAFI Admin</title>
 <!--제이쿼리  -->
-<script src="/resources/jquery/jquery-3.3.1.min.js"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
 <!--부트스트랩  -->
 <link rel="stylesheet" href="/resources/bootstrap/bootstrap.min.css">
 <link rel="stylesheet"
