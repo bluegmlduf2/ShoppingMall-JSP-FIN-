@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MAFI.mappers.shopMapper">
+
+	<!-- 카테고리 1차 분류 선택시 -->
+	<!--1차 분류 클릭시 1차 분류에 속해있는 애들을 다 불러온다  -->
+	<select id="list_1" resultType="com.MAFI.domain.GoodsViewVO">
+	select
+	    g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName,
+	    gdsPrice, gdsStock, gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+	        from tbl_goods g
+	            inner join goods_category c
+	                on g.cateCode = c.cateCode           
+	            where 
+	           <!--  g.cateCode = #{cateCode}
+           		 or  -->
+           		 c.cateCodeRef = #{cateCodeRef}
+	</select>
+	
+	<!-- 카테고리 2차분류 선택시 -->
+	<select id="list_2" resultType="com.MAFI.domain.GoodsViewVO">
+	select
+	    g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName,
+	    gdsPrice, gdsStock, gdsDes, gdsDate, g.gdsImg, g.gdsThumbImg
+	        from tbl_goods g
+	            inner join goods_category c
+	                on g.cateCode = c.cateCode           
+            where g.cateCode = #{cateCode}
+	</select>
+</mapper>
