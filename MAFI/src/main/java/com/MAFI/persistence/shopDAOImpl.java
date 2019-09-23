@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
+import com.MAFI.domain.ReplyListVO;
+import com.MAFI.domain.ReplyVO;
 
 @Repository
 public class shopDAOImpl implements shopDAO{
@@ -36,8 +38,21 @@ public class shopDAOImpl implements shopDAO{
 	}
 	
 	//상품조회
+	@Override
 	public GoodsViewVO getView(int gdsNum) throws Exception{
 		return sql.selectOne("com.MAFI.mappers.adminMapper.goodsView",gdsNum);
 
+	}
+	
+	//소감작성
+	@Override
+	public void regisetReply(ReplyVO replyVO) throws Exception{
+		sql.insert(namespace+".regisetReply", replyVO); 
+	}
+	
+	//소감 리스트
+	@Override
+	public List<ReplyListVO> replyList(int gdsNum) throws Exception{
+		return sql.selectList(namespace+".replyList", gdsNum); 
 	}
 }

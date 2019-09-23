@@ -29,4 +29,32 @@
 	                on g.cateCode = c.cateCode           
             where g.cateCode = #{cateCode}
 	</select>
+	
+	<insert id="regisetReply">
+	 INSERT INTO tbl_reply (
+        gdsNum,
+        userid,
+        repnum,
+        repcon
+    ) VALUES (
+        #{gdsNum},
+        #{userId},
+        tbl_reply_seq.NEXTVAL,
+        #{repCon}
+    )
+    </insert>
+    
+    <select id="replyList" resultType="com.MAFI.domain.ReplyListVO">
+    SELECT
+	    r.gdsnum,
+	    r.repcon,
+	    r.repdate,
+	    r.repnum,
+	    r.userid,
+	    m.username
+	FROM
+    tbl_member m
+    INNER JOIN tbl_reply r ON m.userid = r.userid
+    WHERE r.gdsnum =#{gdsNum}
+    </select>
 </mapper>

@@ -2,13 +2,13 @@ package com.MAFI.domain;
 
 import java.util.Date;
 
-public class ReplyVO {
+public class ReplyListVO {
 	private int gdsNum;
 	private String userId;
 	private int repNum;
 	private String repCon;
 	private Date repDate;
-	
+	private String userName;
 
 	/**
 	 * @return the gdsNum
@@ -69,5 +69,18 @@ public class ReplyVO {
 	 */
 	public void setRepDate(Date repDate) {
 		this.repDate = repDate;
+	}
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}	
+	
 }

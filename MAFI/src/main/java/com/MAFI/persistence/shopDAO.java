@@ -5,6 +5,8 @@ import java.util.List;
 import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
+import com.MAFI.domain.ReplyListVO;
+import com.MAFI.domain.ReplyVO;
 
 public interface shopDAO {
 
@@ -16,4 +18,10 @@ public interface shopDAO {
 
 	// 상품조회
 	public GoodsViewVO getView(int gdsNum) throws Exception;
+	
+	//소감작성
+	public void regisetReply(ReplyVO replyVO) throws Exception;
+	
+	//소감 리스트
+	public List<ReplyListVO> replyList(int gdsNum) throws Exception;
 }
