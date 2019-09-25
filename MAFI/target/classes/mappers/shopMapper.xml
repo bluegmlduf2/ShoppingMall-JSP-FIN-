@@ -57,4 +57,30 @@
     INNER JOIN tbl_reply r ON m.userid = r.userid
     WHERE r.gdsnum =#{gdsNum}
     </select>
+    
+    <!--소감삭제  -->
+    <delete id="deleteReply">
+    DELETE tbl_reply 
+    where repnum=#{repNum} 
+	and userid=#{userId}
+    </delete>
+    
+    <!-- 아이디체크 -->
+    <select id="replyUserIdCheck" resultType="String">
+    SELECT
+    	userid
+	FROM
+	    tbl_reply
+	WHERE
+	    repnum = #{repNum}
+    </select>
+    
+    <update id="modifyReply">
+    	UPDATE tbl_reply
+		SET
+		    repcon = #{repCon}
+		WHERE
+		    userid = #{userId}
+		    AND repnum = #{repNum}
+    </update>
 </mapper>

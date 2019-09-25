@@ -61,7 +61,6 @@ public class shopController {
 	}
 	
 	// 상품조회
-	//@RequestMapping(value = "/view", method = {RequestMethod.GET,RequestMethod.POST})
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public void getView(@RequestParam("n") int gdsNum,Model model) throws Exception {
 		logger.info("get view");
@@ -75,7 +74,7 @@ public class shopController {
 	}
 	
 	//상품평추가후 상품조회 재실행
-	@ResponseBody
+	@ResponseBody//전달받는 데이터의 형태가 JSON일 경우 사용 
 	@RequestMapping(value = "/view/registReply", method = RequestMethod.POST)
 	public void registReply(ReplyVO reply,HttpSession session) throws Exception {
 		logger.info("regiset Reply");
@@ -85,6 +84,7 @@ public class shopController {
 		
 		service.regisetReply(reply);
 		
+		//ajxa를 추가전에는 url이 /view였다. 그리고 현재 메서드 호출 뒤 리다이렉트로 위의 /view의 get형식으로 재호출했었다
 		//리다이렉트는 get형태의 전송
 		//return "redirect:/shop/view?n="+reply.getGdsNum();
 	}
@@ -92,12 +92,60 @@ public class shopController {
 	// 상품평조회
 	@ResponseBody
 	@RequestMapping(value = "/view/replyList", method = RequestMethod.GET)
-	public List<ReplyListVO> getReplyList(@RequestParam("n") int gdsNum) throws Exception {
+	public List<ReplyListVO> deleteReplyList(@RequestParam("n") int gdsNum) throws Exception {
 		logger.info("getReplyList");
 
 		//상품평조회,상품평을 남긴 회원들중 현재상품과 일치하는 정보가 있을떄 조회
 		List<ReplyListVO> reply =service.replyList(gdsNum);
 		return reply;
+	}
+	
+	// 상품평 삭제
+	@ResponseBody
+	@RequestMapping(value = "/view/deleteReply", method = RequestMethod.POST)
+	public int deleteReply(ReplyVO reply,HttpSession session) throws Exception {
+		logger.info("deleteReply");
+		
+		int result=0;
+		
+		MemberVO member=(MemberVO)session.getAttribute("member");
+		String userId=service.idCheck(reply.getRepNum());
+		try {
+			if(member.getUserid().equals(userId)){
+				reply.setUserId(member.getUserid());
+				service.deleteReply(reply);
+				
+				result= 1;
+			}
+		}catch(NullPointerException e){
+			System.out.println("로그인되지 않은 비정상적인 접근 ID:"+e.getMessage());
+			throw e;
+		}
+		
+		return result;
+	}
+
+	// 상품평 수정
+	@ResponseBody
+	@RequestMapping(value = "/view/modifyReply", method = RequestMethod.POST)
+	public int modifyReply(ReplyVO reply, HttpSession session) throws Exception {
+		logger.info("post ModifyReply");
+
+		int result = 0;
+
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		String userId = service.idCheck(reply.getRepNum());
+		try {
+			if (member.getUserid().equals(userId)) {
+				reply.setUserId(member.getUserid());
+				service.modifyReply(reply);
+				result = 1;
+			}
+		} catch (NullPointerException e) {
+			System.out.println("로그인되지 않은 비정상적인 접근 ID:" + e.getMessage());
+			throw e;
+		}
+		return result;
 	}
 
 }

@@ -43,6 +43,15 @@
  section.replyList div.userInfo .userName { font-size:24px; font-weight:bold; }
  section.replyList div.userInfo .date { color:#999; display:inline-block; margin-left:10px; }
  section.replyList div.replyContent { padding:10px; margin:20px 0; }
+ section.replyList div.replyFooter button { font-size:14px; border: 1px solid #999; background:none; margin-right:10px; }
+
+/* 모달설정 */
+ div.replyModal { position:relative; z-index:1; display:none;}
+ div.modalBackground { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.8); z-index:-1; }
+ div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:550px; height:300px; padding:20px 10px; background:#fff; border:2px solid #666; }
+ div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:530px; height:200px; }
+ div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+ div.modalContent button.modal_cancel { margin-left:20px; }
 </style>
  		<script>
  		/* 상품소감목록 출력AJAX */
@@ -57,14 +66,24 @@
 					
 						var repDate = new Date(this.repDate);
 						repDate = repDate.toLocaleDateString("ko-US");
-						
+
+						/*동적인 HTML코드  */
 						str  +="<li data-gdsNum='"+this.gdsNum+"'>'"
 						     + "<div class='userInfo'>"
 						     + "<span class='userName'>" + this.userName + "</span>"
 						     + "<span class='date'>" + repDate + "</span>"
 						     + "</div>"
 						     + "<div class='replyContent'>" + this.repCon + "</div>"
-						     + "</li>";   
+
+						     +"<c:if test='${member != null}'>"
+
+						     + "<div class='replyFooter'>"
+						     + "<button type='button' class='modify' data-repNum='"+this.repNum+"'>修正</button>"
+						     + "<button type='button' class='delete' data-repNum='"+this.repNum+"'>削除</button>"
+						     + "</div>"
+						     + "</li>"
+						     
+						     +"</c:if>";   
 					});
 					
 					$("section.replyList ol").html(str);
@@ -195,7 +214,6 @@
 					 	</section>
 					 	</c:if>
 					 	<section class="replyList">
-					 		<script>replyList();</script>
 					 		<ol>
 					 		<%-- ajax적용하지않고 jstl로 표현한것, 데이터 절감을 위하여 ajax를 사용해야함 	
 					 		<c:forEach items="${reply}" var="reply">
@@ -209,6 +227,90 @@
 					 			</c:forEach> 
 					 		--%>
 					 		</ol>
+					 		 <script>
+					 		 	replyList();
+					 		 </script>
+					 		 <script>
+						 		 $(document).on("click",".modify",function(){
+						 			//$(".replyModal").attr("style","display:block;"); 
+						 			$(".replyModal").fadeIn(200);
+						 			
+						 			var repNum=$(this).attr("data-repNum");
+						 			var repCon=$(this).parent().parent().children(".replyContent").text();
+						 			
+						 			$(".modal_repCon").val(repCon);
+						 			$(".modal_modify_btn").attr("data-repNum",repNum);
+						 		 });
+						 		 
+						 		 $(".modal_cancel").click(function(){
+									$(".replyModal").fadeOut(200);						 			 
+						 		 });
+					 		 </script>
+					 		 <script>
+					 		 //일반삭제버튼
+					 		/*replyList()에서 만들어진 동적인 HTML코드에 이벤트를 적용시 $(document).on()을 사용한다  */
+							/*$(documnet).ready()는 동적인 HTML코드에 적용 불가능하다. */
+					 		$(document).on("click",".delete",function(){
+					 		    var con=confirm("削除しますか？");
+					 			if(con){
+						 			var data={repNum : $(this).attr("data-repNum")};	
+						 			
+						 			$.ajax({
+						 				url : "/shop/view/deleteReply",
+						 				type : "post",
+						 				data : data,
+						 				success : function(result){
+						 					//controller에서 반환하는 값을 메서드의 매개변수 result로 넣어준다
+						 					if(result==1){
+						 						replyList();					 						
+						 					}else{
+												alert("作成者が削除できます");					 						
+						 					}
+						 				},
+						 				error :function(){
+						 					alert("ログインしてください");
+						 				}
+						 			});
+					 			}
+					 		});
+							</script>
+							 <script>
+							 $(document).ready(function(){
+								 //모달창의 수정버튼
+								 $(".modal_modify_btn").click(function(){
+									 var con=confirm("修正しますか？");
+									 
+									 if(con){
+										var data={
+												repNum:$(this).attr("data-repNum"),
+												repCon:$(".modal_repCon").val()
+										}
+										
+										$.ajax({
+											url :"/shop/view/modifyReply",
+											type : "post",
+											data : data,
+											success : function(result){
+												if(result==1){
+													replyList();
+													$(".replyModal").fadeOut(200);
+												}else{
+													alert("作成者が削除できます");	
+												}
+												
+											},
+											error : function(){
+												alert("ログインしてください");
+											}
+										});
+									 }
+								 });
+								 //모달창의 취소버튼
+								 $(".modal_cancel").click(function(){
+									 $(".replyModal").fadeOut(200);
+								 });
+							 });							
+							 </script>
 					 	</section>
 					 </div>												
 				</section>				
@@ -219,6 +321,20 @@
 				<%@ include file="../include/footer.jsp"%>
 			</div>
 		</footer>
+	</div>
+	<!--모달창  -->
+	<div class="replyModal">
+		<div class="modalContent">
+			<div>
+				<textarea class="modal_repCon" name="modal_repCon"></textarea>
+			</div>
+			
+			<div>
+				<button type="button" class="modal_modify_btn">修正</button>			
+				<button type="button" class="modal_cancel">取り消し</button>			
+			</div>
+		</div>
+		<div class="modalBackground"></div>
 	</div>
 </body>
 </html>

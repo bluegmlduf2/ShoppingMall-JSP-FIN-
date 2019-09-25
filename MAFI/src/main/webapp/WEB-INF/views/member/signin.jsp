@@ -22,13 +22,13 @@
 		<section id="content">
 			<form role="form" method="post" autocomplete="off">
 				<div class="input_area">
-					<label for="userId">ID</label> <input type="email" id="userId"
-						name="userid" required="required" />
+					<label for="userId">ID</label> 
+					<input type="email" id="userId"name="userid" required="required" value="11@11"/>
 				</div>
 
 				<div class="input_area">
-					<label for="userPass">PASSWORD</label> <input type="password"
-						id="userPass" name="userpass" required="required" />
+					<label for="userPass">PASSWORD</label> 
+					<input type="password" id="userPass" name="userpass" required="required" value="11"/>
 				</div>
 
 				<button type="submit" id="signin_btn" name="signin_btn">ログイン</button>
