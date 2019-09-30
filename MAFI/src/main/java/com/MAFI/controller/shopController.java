@@ -249,6 +249,7 @@ public class shopController {
 		return "redirect:/shop/orderList";
 	}
 
+	//주문리스트
 	@RequestMapping(value = "/orderList", method = RequestMethod.GET)
 	public void getOrderList(HttpSession session, OrderVO order, Model model) throws Exception {
 		logger.info("getOrderList");
@@ -263,6 +264,7 @@ public class shopController {
 		model.addAttribute("orderList", orderList);
 	}
 
+	//주문상세리스트
 	@RequestMapping(value = "/orderView", method = RequestMethod.GET)
 	public void getOrderList(HttpSession session, 
 							@RequestParam("n") String orderId,

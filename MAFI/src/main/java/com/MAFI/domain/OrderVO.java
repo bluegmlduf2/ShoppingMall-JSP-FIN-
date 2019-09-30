@@ -13,6 +13,22 @@ public class OrderVO {
 	private String orderPhon;
 	private int amount;
 	private Date orderDate;
+	
+	private String delivery;
+	
+	
+	/**
+	 * @return the delivery
+	 */
+	public String getDelivery() {
+		return delivery;
+	}
+	/**
+	 * @param delivery the delivery to set
+	 */
+	public void setDelivery(String delivery) {
+		this.delivery = delivery;
+	}
 	/**
 	 * @return the orderId
 	 */

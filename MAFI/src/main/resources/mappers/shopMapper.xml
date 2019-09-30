@@ -170,6 +170,7 @@
     userid = #{userId}
     </delete>
     
+    <!--주문정보보기  -->
     <select id="orderList" resultType="com.MAFI.domain.OrderVO">
         SELECT
     orderid,
@@ -180,7 +181,8 @@
     useraddr3,
     orderphon,
     amount,
-    orderdate
+    orderdate,
+    DELIVERY
 	FROM
 	    tbl_order
 	WHERE userId=#{userId}
@@ -189,7 +191,7 @@
     <!-- 주문 상세정보 보기  -->
     <select id="orderView" resultType="com.MAFI.domain.OrderListVO">
     SELECT
-	   O.ORDERID, O.USERID, O.ORDERREC, O.USERADDR1, O.USERADDR2, O.USERADDR3, O.ORDERPHON, O.AMOUNT, O.ORDERDATE,
+	   O.ORDERID, O.USERID, O.ORDERREC, O.USERADDR1, O.USERADDR2, O.USERADDR3, O.ORDERPHON, O.AMOUNT, O.ORDERDATE,O.DELIVERY,
 	   D.GDSNUM, D.CARTSTOCK, D.ORDERDETAILSNUM,
 	   G.GDSNAME, G.GDSTHUMBIMG, G.GDSPRICE
 	FROM

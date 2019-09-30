@@ -8,6 +8,8 @@ import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
 import com.MAFI.domain.MemberVO;
+import com.MAFI.domain.OrderListVO;
+import com.MAFI.domain.OrderVO;
 
 public interface AdminService {
 	// 카테고리
@@ -28,4 +30,12 @@ public interface AdminService {
 	//상품삭제
 	public void goodsDelete(int gdsNum)  throws Exception;
 
+	//주문목록
+	public List<OrderVO> orderList() throws Exception;
+	
+	//주문상세목록
+	public List<OrderListVO> orderView(OrderVO order) throws Exception;
+
+	//주문상태수정
+	public void delivery(OrderVO order) throws Exception;
 }

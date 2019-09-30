@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
+import com.MAFI.domain.MemberVO;
+import com.MAFI.domain.OrderListVO;
+import com.MAFI.domain.OrderVO;
 import com.MAFI.service.AdminService;
 import com.MAFI.utils.UploadFileUtils;
 
@@ -216,5 +220,41 @@ public class AdminController {
 	 }
 	 
 	 return; 
+	}
+	
+	//주문리스트
+	@RequestMapping(value = "/shop/orderList", method = RequestMethod.GET)
+	public void getOrderList(HttpSession session, OrderVO order, Model model) throws Exception {
+		logger.info("getOrderList");
+
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		String userId = member.getUserid();
+
+		List<OrderVO> orderList = adminservice.orderList();
+
+		model.addAttribute("orderList", orderList);
+	}
+
+	//주문상세리스트
+	@RequestMapping(value = "/shop/orderView", method = RequestMethod.GET)
+	public void getOrderList(HttpSession session, 
+							@RequestParam("n") String orderId,
+							 OrderVO order, Model model)throws Exception {
+		logger.info("getOrderView");
+
+		order.setOrderId(orderId);
+		List<OrderListVO> orderView = adminservice.orderView(order);
+
+		model.addAttribute("orderView", orderView);
+	}
+	
+	//주문상태변경
+	@RequestMapping(value = "/shop/orderView", method = RequestMethod.POST)
+	public String delivery(OrderVO order) throws Exception {
+		logger.info("post delivery");
+
+		adminservice.delivery(order); 
+
+		return "redirect:/admin/shop/orderView?n="+order.getOrderId();
 	}
 }

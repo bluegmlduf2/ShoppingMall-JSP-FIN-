@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
+import com.MAFI.domain.OrderListVO;
+import com.MAFI.domain.OrderVO;
 import com.MAFI.persistence.AdminDAO;
 
 @Service
@@ -53,4 +55,21 @@ public class AdminServiceImpl implements AdminService {
 		dao.goodsDelete(gdsNum);
 	}
 	
+	//주문목록
+	@Override
+	public List<OrderVO> orderList() throws Exception{
+		return dao.orderList();
+	}
+	
+	//주문상세목록
+	@Override
+	public List<OrderListVO> orderView(OrderVO order) throws Exception{
+		return dao.orderView(order);
+	}
+	
+	//주문상태수정
+	@Override
+	public void delivery(OrderVO order) throws Exception{
+		dao.delivery(order);
+	}
 }

@@ -88,4 +88,43 @@
 	DELETE TBL_GOODS
 	WHERE GDSNUM=#{gdsNum}
 	</delete>
+
+    <!--주문정보보기  -->
+    <select id="orderList" resultType="com.MAFI.domain.OrderVO">
+        SELECT
+    orderid,
+    userid,
+    orderrec,
+    useraddr1,
+    useraddr2,
+    useraddr3,
+    orderphon,
+    amount,
+    orderdate,
+    DELIVERY
+	FROM
+	    tbl_order
+    </select>
+    
+	  <!-- 주문 상세정보 보기  -->
+    <select id="orderView" resultType="com.MAFI.domain.OrderListVO">
+    SELECT
+	   O.ORDERID, O.USERID, O.ORDERREC, O.USERADDR1, O.USERADDR2, O.USERADDR3, O.ORDERPHON, O.AMOUNT, O.ORDERDATE, O.DELIVERY,
+	   D.GDSNUM, D.CARTSTOCK, D.ORDERDETAILSNUM,
+	   G.GDSNAME, G.GDSTHUMBIMG, G.GDSPRICE
+	FROM
+	    tbl_order           o
+	    INNER JOIN tbl_order_details   d ON o.orderid = d.orderid
+	    INNER JOIN tbl_goods           g ON d.gdsnum = g.gdsnum
+	WHERE  O.ORDERID=#{orderId}
+    </select>
+    
+    <!-- 배송상태변경 -->
+    <update id="delivery">
+    UPDATE tbl_order
+	SET
+	    delivery = #{delivery}
+	WHERE
+	    orderid = #{orderId}
+    </update>
 </mapper>

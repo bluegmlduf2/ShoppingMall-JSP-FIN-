@@ -6,26 +6,31 @@
 <head>
 <title>MAFI Admin</title>
 <!--제이쿼리  -->
-<!-- 부트스트랩 이전에 제이쿼리를 넣어줘야합니다. 부트스트랩은 제이쿼리 기반으로 작동되기 때문입니다. -->
-<script src="/resources/jquery/jquery-3.4.1.min.js"></script>
+<script src="/resources/jquery/jquery-3.4.1.min.js"></script> 
 <!--부트스트랩  -->
 <link rel="stylesheet" href="/resources/bootstrap/bootstrap.min.css">
 <link rel="stylesheet"
 	href="/resources/bootstrap/bootstrap-theme.min.css">
 <script src="/resources/bootstrap/bootstrap.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <!--스타일css  -->
 <%@ include file="../include/style.jsp"%>
 <style>
 /*섬네일 크기수정  */
-/*
-#content ul li img { width:200px; height:200px;}
-#content ul li  { display:inline-block; margin:10px; }
-#content ul li div.goodsName { padding:10px 0; text-align:center;}
- #content ul li div.goodsName a { color:#000;} */
+#container_box table img { width:150px; height:auto;}
 
- section#content ul li { border:5px solid #eee; padding:10px 20px; margin-bottom:20px; }
- section#content .orderList span { font-size:20px; font-weight:bold; display:inline-block; width:90px;
+/*
+#container_box table { width:900px; }
+#container_box table th { font-size:20px; font-weight:bold;
+       text-align:center; padding:10px; border-bottom:2px solid #666; }
+#container_box table tr:hover { background:#eee; }
+#container_box table td { padding:10px; text-align:center; }
+#container_box table img { width:150px; height:auto; }
+*/
+ div#container_box ul li { border:5px solid #eee; padding:10px 20px; margin-bottom:20px; }
+ div#container_box .orderList span { font-size:20px; font-weight:bold; display:inline-block; width:90px; margin-right:10px; }
+
 </style>
 </head>
 <body>
@@ -47,12 +52,12 @@
 				<%@ include file="../include/aside.jsp"%>
 			</aside>
 			<div id="container_box">
-				<section id="content">
+				<section class="content">
 					<ul class="orderList">
 						 <c:forEach items="${orderList}" var="orderList">
 							 <li>
 							  <div>
-							  	<p><span>注文番号</span><a href="/shop/orderView?n=${orderList.orderId}">${orderList.orderId}</a></p>
+							  	<p><span>注文番号</span><a href="/admin/shop/orderView?n=${orderList.orderId}">${orderList.orderId}</a></p>
 							  	<p><span>受領人</span>${orderList.orderRec}</p>
 							  	<p><span>住所</span>(${orderList.userAddr1})-${orderList.userAddr2} ${orderList.userAddr3}</p>
 							  	<p><span>価格</span><fmt:formatNumber pattern="###,###,###" value="${orderList.amount}"/>ウォン</p>
