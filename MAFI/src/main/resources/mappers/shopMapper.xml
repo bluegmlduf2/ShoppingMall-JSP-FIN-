@@ -83,4 +83,121 @@
 		    userid = #{userId}
 		    AND repnum = #{repNum}
     </update>
+    
+    <insert id="addCart">
+    INSERT INTO tbl_cart (
+	    cartnum,
+	    userid,
+	    gdsnum,
+	    cartstock
+	) VALUES (
+	    tbl_cart_seq.NEXTVAL,
+	    #{userId},
+	    #{gdsNum},
+	    #{cartStock}
+	)
+    </insert>
+    
+    <!-- 카트리스트  -->
+    <select id="cartList" resultType="com.MAFI.domain.CartListVO">
+    SELECT
+    ROW_NUMBER() OVER(ORDER BY c.cartnum DESC) AS num,
+    c.cartnum,
+    c.userid,
+    c.gdsnum,
+    c.cartstock,
+    c.adddata,
+    g.gdsname,
+    g.gdsprice,
+    g.gdsthumbimg
+	FROM
+	    tbl_cart    c
+	    INNER JOIN tbl_goods   g ON c.gdsnum = g.gdsnum
+	WHERE
+	    userid = #{userId}
+	</select>
+	
+	<delete id="deleteCart">
+	DELETE FROM tbl_cart
+	WHERE
+    		cartnum = #{cartNum}
+    	AND userid = #{userId}
+	</delete>
+	
+	<!--주문정보입력  -->
+	<insert id="orderInfo">
+    INSERT INTO tbl_order (
+        orderid,
+        userid,
+        orderrec,
+        useraddr1,
+        useraddr2,
+        useraddr3,
+        orderphon,
+        amount
+    ) VALUES (
+        #{orderId},
+        #{userId},
+        #{orderRec},
+        #{userAddr1},
+        #{userAddr2},
+        #{userAddr3},
+        #{orderPhon},
+        #{amount}
+    )
+    </insert>
+    
+	<!-- insert select 부분 테이블을 잘못읽어서 한 30분동안 헤맴..tbl_cart테이블의 모든 목록을 입력하고 나중에 delete쿼리로 tbl_cart의 데이터 날릴 예정 --> 
+    <insert id="orderInfo_Detail">
+	INSERT INTO tbl_order_details (
+	    orderdetailsnum,
+	    orderid,
+	    gdsNum,
+	    cartStock
+	)
+    SELECT
+        tbl_order_details_seq.NEXTVAL,
+        #{orderId},
+        gdsNum,
+        cartStock
+    FROM
+        tbl_cart
+    </insert>
+    
+    <delete id="cartAllDelete">
+    DELETE FROM tbl_cart
+	WHERE
+    userid = #{userId}
+    </delete>
+    
+    <select id="orderList" resultType="com.MAFI.domain.OrderVO">
+        SELECT
+    orderid,
+    userid,
+    orderrec,
+    useraddr1,
+    useraddr2,
+    useraddr3,
+    orderphon,
+    amount,
+    orderdate
+	FROM
+	    tbl_order
+	WHERE userId=#{userId}
+    </select>
+    
+    <!-- 주문 상세정보 보기  -->
+    <select id="orderView" resultType="com.MAFI.domain.OrderListVO">
+    SELECT
+	   O.ORDERID, O.USERID, O.ORDERREC, O.USERADDR1, O.USERADDR2, O.USERADDR3, O.ORDERPHON, O.AMOUNT, O.ORDERDATE,
+	   D.GDSNUM, D.CARTSTOCK, D.ORDERDETAILSNUM,
+	   G.GDSNAME, G.GDSTHUMBIMG, G.GDSPRICE
+	FROM
+	    tbl_order           o
+	    INNER JOIN tbl_order_details   d ON o.orderid = d.orderid
+	    INNER JOIN tbl_goods           g ON d.gdsnum = g.gdsnum
+	WHERE
+	    o.userid = #{userId}
+	    AND O.ORDERID=#{orderId}
+    </select>
 </mapper>

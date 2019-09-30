@@ -2,9 +2,14 @@ package com.MAFI.persistence;
 
 import java.util.List;
 
+import com.MAFI.domain.CartListVO;
+import com.MAFI.domain.CartVO;
 import com.MAFI.domain.CategoryVO;
 import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
+import com.MAFI.domain.OrderDetailVO;
+import com.MAFI.domain.OrderListVO;
+import com.MAFI.domain.OrderVO;
 import com.MAFI.domain.ReplyListVO;
 import com.MAFI.domain.ReplyVO;
 
@@ -33,4 +38,28 @@ public interface shopDAO {
 	
 	//상품소감 수정
 	public void modifyReply(ReplyVO replyVO) throws Exception;
+	
+	//카트담기
+	public void addCart(CartVO cartVO) throws Exception;
+	
+	//카트리스트 반환
+	public List<CartListVO> cartList(String userId) throws Exception;
+	
+	//카트리스트 전체삭제
+	public void deleteCart(CartVO cart) throws Exception;
+	
+	//주문정보
+	public void orderInfo(OrderVO order) throws Exception;
+	
+	//주문상세정보
+	public void orderInfo_Details(OrderDetailVO order) throws Exception;
+	
+	//카트리스트 전부 삭제
+	public void cartAllDelete(String userId) throws Exception;
+	
+	//주문목록
+	public List<OrderVO> orderList(String userId) throws Exception;
+	
+	//주문상세목록
+	public List<OrderListVO> orderView(OrderVO order) throws Exception;
 }

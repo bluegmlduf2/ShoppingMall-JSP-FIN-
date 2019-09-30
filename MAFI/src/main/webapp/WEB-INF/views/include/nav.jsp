@@ -13,6 +13,8 @@
 		</li> 
 		</c:if>
 		<li>${member.username}様　ようこそ.</li>
+		<li><a href="/shop/cartList">カートリスト</a></li>
+		<li><a href="/shop/orderList">注文リスト</a></li>
 		<li><a href="/member/signout">ログアウト</a></li>
 	</c:if>
 </ul>

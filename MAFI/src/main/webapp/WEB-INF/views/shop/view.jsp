@@ -113,7 +113,7 @@
 				<section id="content">
 					
 					<form role="form" method="post">
-						<input type="hidden" "gdsNum" value="${view.gdsNum}"/>					
+						<input type="hidden" id="gdsNum" value="${view.gdsNum}"/>					
 					</form>
 					
 					<div class="goods">
@@ -163,8 +163,36 @@
 							</script>
 
 							<p class="addToCart">
-							   <button type="button">カートに入れる</button>
+							   <button type="button" class="addCart_btn">カートに入れる</button>
 							</p>
+							<script>
+								$(".addCart_btn").click(function(){
+									var gdsNum=$("#gdsNum").val();
+									var cartStock=$(".numBox").val();
+									var data={
+											gdsNum:gdsNum,
+											cartStock:cartStock
+									};
+									
+									$.ajax({
+										url:"/shop/view/addCart",
+										type:"post",
+										data:data,
+										success:function(result){
+											if(result==1){
+												alert("カートに商品を入れました");
+												$(".numBox").val("1");
+											}else{
+												alert("ログインしてください");
+												$(".numBox").val("1");
+											}
+										},
+										error:function(result){
+											alert("カートに商品を入れません");
+										}
+									});
+								});
+							</script>
 						 </div>
 					 <div class="gdsDes">${view.gdsDes}</div>	
 					 </div>
