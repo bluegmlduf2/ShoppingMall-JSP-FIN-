@@ -129,7 +129,7 @@
 							
 							<p class="gdsStock"><span>在庫</span><fmt:formatNumber pattern="###,###,###" value="${view.gdsStock}"/>EA</p>
 
-							
+							<c:if test="${view.gdsStock!=0}">
 							<p class="cartStock">
 								<span>購入数量</span>
 								<button type="button" class="plus">+</button>
@@ -193,6 +193,10 @@
 									});
 								});
 							</script>
+							</c:if>
+							<c:if test="${view.gdsStock==0}">
+								<p>在庫不足</p>
+							</c:if>
 						 </div>
 					 <div class="gdsDes">${view.gdsDes}</div>	
 					 </div>
@@ -230,6 +234,11 @@
 					 							type: "post",
 					 							data:data,
 					 							success:function(){
+					 								/*
+					 								replyList(); 때문에 많이 헷갈림..ajax로 통신이 끝난 후 
+					 								보통은 location.href=""를 사용하지만 이 경우 즉각 적으로
+					 								댓글들을 보여주기 위해서 동적 HTML을 다시 뿌려준다
+					 								*/
 					 								replyList(); //성공시 소감평 재호출
 					 								$("#repCon").val("");
 					 							}

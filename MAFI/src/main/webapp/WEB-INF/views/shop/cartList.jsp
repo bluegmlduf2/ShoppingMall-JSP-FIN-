@@ -114,6 +114,7 @@
 										success:function(result){
 											if(result==1){
 												//성공 시 get형태로 해당페이지를 다시 불러온다
+												//location없이도  ajax가 작동하며 해당페이지에 다시 뿌려줌
 												location.href="/shop/cartList";
 											}else{
 												alert("削除できません。");
@@ -140,6 +141,7 @@
 							  </div> 
 							  <div class="gdsInfo">
 							  	<p>
+								<span>カート番号:</span>${cartList.cartNum}</br>							  
 								<span>商品名:</span>${cartList.gdsName}</br>							  
 								<span>単価:</span><fmt:formatNumber pattern="###,###,###" value="${cartList.gdsPrice}"/>ウォン</br>							  
 								<span>購入数量:</span>${cartList.cartStock}</br>							  

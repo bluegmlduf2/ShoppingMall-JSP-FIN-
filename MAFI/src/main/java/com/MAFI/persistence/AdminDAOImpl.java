@@ -12,6 +12,8 @@ import com.MAFI.domain.GoodsVO;
 import com.MAFI.domain.GoodsViewVO;
 import com.MAFI.domain.OrderListVO;
 import com.MAFI.domain.OrderVO;
+import com.MAFI.domain.ReplyListVO;
+import com.MAFI.domain.ReplyVO;
 
 @Repository
 public class AdminDAOImpl implements AdminDAO{
@@ -75,4 +77,21 @@ public class AdminDAOImpl implements AdminDAO{
 		sql.update(namespace+".delivery", order);
 	}
 	
+	//배송완료시 상품수량 조절
+	@Override
+	public void changeStock(GoodsVO vo) throws Exception {
+		sql.update(namespace+".changeStock", vo);
+	}
+	
+	//모든 소감
+	@Override
+	public List<ReplyListVO> allReply() throws Exception{
+		return sql.selectList(namespace+".allReply");
+	}
+	
+	//선택 소감 삭제
+	@Override
+	public void deleteReply(int repNum) throws Exception {
+		sql.delete(namespace+".deleteReply", repNum);
+	}
 }

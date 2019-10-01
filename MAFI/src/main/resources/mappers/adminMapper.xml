@@ -127,4 +127,28 @@
 	WHERE
 	    orderid = #{orderId}
     </update>
+    
+    <update id="changeStock">
+    UPDATE tbl_goods
+		SET
+		    gdsstock = gdsstock - #{gdsStock}
+		WHERE
+		    gdsnum = #{gdsNum}
+    </update>
+    
+    <!-- 모든 소감 보기 -->
+    <select id="allReply" resultType="com.MAFI.domain.ReplyListVO">
+	SELECT
+	    r.GDSNUM, r.USERID, r.REPNUM, r.REPCON, r.REPDATE,
+	    m.username
+	FROM
+	    tbl_reply    r
+	    INNER JOIN tbl_member   m ON r.userid = m.userid        
+    </select>
+
+    <!-- 선택 소감 지우기  -->    
+    <delete id="deleteReply">
+    DELETE tbl_reply
+    WHERE repNum=#{repNum}
+    </delete>
 </mapper>

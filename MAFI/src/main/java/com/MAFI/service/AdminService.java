@@ -10,6 +10,8 @@ import com.MAFI.domain.GoodsViewVO;
 import com.MAFI.domain.MemberVO;
 import com.MAFI.domain.OrderListVO;
 import com.MAFI.domain.OrderVO;
+import com.MAFI.domain.ReplyListVO;
+import com.MAFI.domain.ReplyVO;
 
 public interface AdminService {
 	// 카테고리
@@ -38,4 +40,13 @@ public interface AdminService {
 
 	//주문상태수정
 	public void delivery(OrderVO order) throws Exception;
+	
+	//배송완료시 상품수량 조절
+	public void changeStock(GoodsVO vo) throws Exception;
+	
+	//모든 소감
+	public List<ReplyListVO> allReply() throws Exception;
+	
+	//선택 소감 삭제
+	public void deleteReply(int repNum) throws Exception;
 }

@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MAFI.domain.CategoryVO;
@@ -29,6 +30,8 @@ import com.MAFI.domain.GoodsViewVO;
 import com.MAFI.domain.MemberVO;
 import com.MAFI.domain.OrderListVO;
 import com.MAFI.domain.OrderVO;
+import com.MAFI.domain.ReplyListVO;
+import com.MAFI.domain.ReplyVO;
 import com.MAFI.service.AdminService;
 import com.MAFI.utils.UploadFileUtils;
 
@@ -254,7 +257,49 @@ public class AdminController {
 		logger.info("post delivery");
 
 		adminservice.delivery(order); 
-
+		
+		List<OrderListVO> orderView=adminservice.orderView(order);
+		GoodsVO goods =new GoodsVO();
+		
+		for(OrderListVO i:orderView){
+			goods.setGdsNum(i.getGdsNum());
+			goods.setGdsStock(i.getCartStock());
+			adminservice.changeStock(goods);
+		}
+		
 		return "redirect:/admin/shop/orderView?n="+order.getOrderId();
+	}
+	
+	
+	//모든소감리스트
+	@RequestMapping(value = "/shop/allReply", method = RequestMethod.GET)
+	public void getAllReply(Model model) throws Exception {
+		logger.info("getAllReply");
+
+		List<ReplyListVO> replyList = adminservice.allReply();
+
+		model.addAttribute("reply", replyList);
+	}
+	
+	//선택 소감 삭제 
+	@RequestMapping(value = "/shop/allReply", method = RequestMethod.POST)
+	@ResponseBody
+	public int deleteReply(HttpSession session,@RequestParam("repNum") int repNum) throws Exception {
+		logger.info("deleteReply");
+
+		int result = 0;
+
+		MemberVO member = (MemberVO) session.getAttribute("member");
+
+		try {
+			if (member!=null) {
+				adminservice.deleteReply(repNum);
+				result=1;
+			}
+		} catch (NullPointerException e) {
+			System.out.println("로그인되지 않은 비정상적인 접근 ID:" + e.getMessage());
+			throw e;
+		}
+		return result;
 	}
 }
