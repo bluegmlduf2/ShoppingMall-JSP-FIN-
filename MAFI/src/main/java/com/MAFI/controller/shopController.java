@@ -219,7 +219,7 @@ public class shopController {
 	// 뷰에서 form태그 action 없이 cartList재호출함
 	@RequestMapping(value = "/cartList", method = RequestMethod.POST)
 	public String order(HttpSession session, OrderVO order, OrderDetailVO orderDetail) throws Exception {
-		logger.info("post order");
+		logger.info("post cartList");
 
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		String userId = member.getUserid();
@@ -229,6 +229,7 @@ public class shopController {
 		String ym = year + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 		String ymd = ym + new DecimalFormat("00").format(cal.get(Calendar.DATE));
 		String subNum = "";
+
 
 		for (int i = 1; i <= 6; i++) {
 			subNum += (int) (Math.random() * 10);
